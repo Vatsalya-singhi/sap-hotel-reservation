@@ -40,12 +40,9 @@ export class RoomBooking {
         const inputSize: string = await this.askQuestionPromise("Enter Hotel Size => ");
         const roomCount = Number(inputSize);
 
-        if (!this.isRoomNumValid(roomCount)) {
-            console.log(status.Declined);
+        if (!this.buildRoomMatrix(roomCount)) {
             return;
         }
-
-        this.buildRoomMatrix(roomCount);
 
         while (this.continueFlag) {
             const input: string = await this.askQuestionPromise("Enter booking dates as (x,y) => ");
@@ -76,12 +73,18 @@ export class RoomBooking {
         return !isNaN(num) && num >= 0 && num % 1 == 0;
     }
 
-    public buildRoomMatrix(size: number): void {
+    public buildRoomMatrix(size: number): boolean {
+        if (!this.isRoomNumValid(size)) {
+            console.log(status.Declined);
+            return false;
+        }
+
         const outerArr: boolean[][] = new Array(size);
         for (let index = 0; index < outerArr.length; index++) {
             outerArr[index] = new Array(this.totalDays).fill(false);
         }
         this.roomArr = outerArr;
+        return true;
     }
 
     public bookingFunction(input: string): status {
