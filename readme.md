@@ -10,6 +10,8 @@ Use the package manager [node](https://nodejs.org/en/) to install dependencies.
 npm install
 ```
 
+Incase of typescript/tsconfig related errors, restart typescript server
+
 ## Usage
 
 ```python

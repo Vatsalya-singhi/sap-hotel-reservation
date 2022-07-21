@@ -57,4 +57,15 @@ describe('RoomBooking', () => {
         expect(roomBooking.bookingFunction('8,9')).to.deep.equal(status.Accepted);
     })
 
+    it('Room Matrix', () => {
+        const roomBooking = new RoomBooking();
+        expect(roomBooking.buildRoomMatrix(-1)).to.deep.equal(false);
+        expect(roomBooking.buildRoomMatrix(0)).to.deep.equal(false);
+        expect(roomBooking.buildRoomMatrix(1)).to.deep.equal(true);
+        expect(roomBooking.buildRoomMatrix(100)).to.deep.equal(true);
+        expect(roomBooking.buildRoomMatrix(2.5)).to.deep.equal(false);
+        expect(roomBooking.buildRoomMatrix(3.4)).to.deep.equal(false);
+        expect(roomBooking.buildRoomMatrix(0.9999)).to.deep.equal(false);
+    })
+
 })
