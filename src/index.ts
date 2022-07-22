@@ -21,14 +21,8 @@ export class RoomBooking {
             input: stdin,
             output: stdout
         }));
-        // this.rl = readline.createInterface({
-        //     input: stdin,
-        //     output: stdout
-        // });
         this.setTotalDays(365);
-        // this.totalDays = 365;
         this.setRoomArr([]);
-        // this.roomArr = [];
     }
 
     /**
@@ -83,7 +77,6 @@ export class RoomBooking {
         for (let index = 0; index < outerArr.length; index++) {
             outerArr[index] = new Array(this.totalDays).fill(false);
         }
-        // this.roomArr = outerArr;
         this.setRoomArr(outerArr);
         return true;
     }
@@ -124,6 +117,7 @@ export class RoomBooking {
         const updatedArr = new Array(endDate - startDate + 1).fill(true);
         calenderArr.splice(startDate, endDate - startDate + 1, ...updatedArr);
         roomArr[index] = calenderArr;
+        
         this.setRoomArr(roomArr);
         console.log(status.Accepted);
         return status.Accepted;
