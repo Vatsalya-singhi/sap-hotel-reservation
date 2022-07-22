@@ -17,19 +17,18 @@ export class RoomBooking {
     private continueFlag = true;
 
     constructor() {
-        this.rl = readline.createInterface({
+        this.setRL(readline.createInterface({
             input: stdin,
             output: stdout
-        });
-        this.totalDays = 365;
-        this.roomArr = [];
-
-        // this.startRoomBooking();
-        // (async () => {
-        //     while (true) {
-        //         await this.startRoomBooking();
-        //     }
-        // })();
+        }));
+        // this.rl = readline.createInterface({
+        //     input: stdin,
+        //     output: stdout
+        // });
+        this.setTotalDays(365);
+        // this.totalDays = 365;
+        this.setRoomArr([]);
+        // this.roomArr = [];
     }
 
     /**
@@ -44,12 +43,13 @@ export class RoomBooking {
             return;
         }
 
-        while (this.continueFlag) {
+        while (this.getContinueFlag()) {
             const input: string = await this.askQuestionPromise("Enter booking dates as (x,y) => ");
             this.bookingFunction(input);
 
             const confirmation: string = await this.askQuestionPromise("Continue (y/n) ?? => ");
-            this.continueFlag = (confirmation && confirmation.toLowerCase() !== "n") ? true : false;
+            const flag = (confirmation && confirmation.toLowerCase() !== "n") ? true : false;
+            this.setContinueFlag(flag);
         }
 
         // rl.close();
@@ -83,7 +83,8 @@ export class RoomBooking {
         for (let index = 0; index < outerArr.length; index++) {
             outerArr[index] = new Array(this.totalDays).fill(false);
         }
-        this.roomArr = outerArr;
+        // this.roomArr = outerArr;
+        this.setRoomArr(outerArr);
         return true;
     }
 
@@ -105,7 +106,9 @@ export class RoomBooking {
             return status.Declined;
         }
 
-        const index = this.roomArr.findIndex((calenderArr) => {
+        const roomArr = this.getRoomArr();
+
+        const index = roomArr.findIndex((calenderArr) => {
             const splicedArr = calenderArr.slice(startDate, endDate + 1);
             if (splicedArr.includes(true))
                 return false;
@@ -117,13 +120,51 @@ export class RoomBooking {
             return status.Declined;
         }
 
-        const calenderArr = this.roomArr[index];
+        const calenderArr = roomArr[index];
         const updatedArr = new Array(endDate - startDate + 1).fill(true);
         calenderArr.splice(startDate, endDate - startDate + 1, ...updatedArr);
-        this.roomArr[index] = calenderArr;
+        roomArr[index] = calenderArr;
+        this.setRoomArr(roomArr);
         console.log(status.Accepted);
         return status.Accepted;
     }
+
+
+    /**
+    * GETTERS
+    */
+
+    public getRL(): readline.Interface {
+        return this.rl;
+    }
+    public getTotalDays(): number {
+        return this.totalDays;
+    }
+    public getRoomArr(): boolean[][] {
+        return this.roomArr;
+    }
+    public getContinueFlag(): boolean {
+        return this.continueFlag;
+    }
+
+    /**
+    * SETTERS
+    */
+
+    public setRL(val: readline.Interface): void {
+        this.rl = val;
+    }
+    public setTotalDays(val: number): void {
+        this.totalDays = val;
+    }
+    public setRoomArr(arr: boolean[][]): void {
+        this.roomArr = arr;
+    }
+    public setContinueFlag(val: boolean): void {
+        this.continueFlag = val;
+    }
+
+
 
 }
 
